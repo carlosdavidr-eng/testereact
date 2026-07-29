@@ -1,186 +1,182 @@
-# Landing Page de Captura de Leads — Sistema Full Stack (Node.js + Express + React + SQLite)
+# 🎓 Sistema Acadêmico de Captura de Leads — React 18 + Node.js + SQLite
 
-> **Projeto Acadêmico:** Aplicação Full Stack moderna para captura, validação e armazenamento de *leads* em tempo real.
+> **Projeto Acadêmico Full Stack:** Aplicação moderna baseada em componentes reativos em **React 18 (Vite)** e API RESTful robusta em **Node.js (Express)** com banco de dados **SQLite**.
 
 ---
 
 ## 📋 Sobre o Projeto
 
-Este projeto consiste em uma **Landing Page de Alta Conversão** desenvolvida em **React 18** com **Vite** e **Tailwind CSS**, integrada a uma **API RESTful** desenvolvida com Node.js e Express, utilizando o banco de dados leve **SQLite** para persistência de dados.
+Este projeto consiste em um **Sistema Acadêmico de Captura de Leads** desenvolvido com uma interface reativa moderna construída em **React 18**, **Vite** e **Tailwind CSS**, totalmente integrada a um backend em **Node.js + Express** com persistência relacional no **SQLite**.
 
-A aplicação foi desenvolvida seguindo boas práticas de arquitetura de software, componentes modulares em React, validação e sanitização de dados no backend, segurança HTTP com Helmet e navegação responsiva.
+A aplicação foi estruturada seguindo arquitetura modular de componentes em React, gerenciamento de estado reativo via Hooks (`useState`, `useEffect`), validação e sanitização estrita de dados no servidor e navegação suave sem recarregamento da página.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-### **Frontend (Interface do Usuário com React)**
-- **React 18** — Biblioteca para construção de interfaces baseadas em componentes.
-- **Vite** — Build tool ultra-rápida para desenvolvimento frontend moderno.
-- **Tailwind CSS** — Framework CSS utilitário para design responsivo, elegante e moderno.
-- **JavaScript ES6+ (JSX)** — Lógica do cliente, manipulação de estado (`useState`, `useEffect`), máscaras de formulário e consumo da API via `fetch`.
+### **Frontend (React 18 + Vite + Tailwind CSS)**
+- **React 18** — Biblioteca declarativa e baseada em componentes reativos para criação de interfaces modernas.
+- **Vite** — Ferramenta de build de última geração com Hot Module Replacement (HMR) instantâneo.
+- **Tailwind CSS v3** — Framework CSS utilitário para estilização rápida, responsiva e elegante.
+- **JSX & React Hooks** — Gerenciamento de estado de formulário, máscaras dinâmicas e integração assíncrona com a API via `fetch`.
 
-### **Backend (API RESTful)**
+### **Backend (Node.js + Express + SQLite)**
 - **Node.js** — Ambiente de execução JavaScript no servidor.
-- **Express.js** — Framework web para rotas, middlewares e servir os arquivos de produção do React.
-- **better-sqlite3** — Driver síncrono e de alta performance para o banco SQLite.
-- **Helmet** — Middleware para configuração de cabeçalhos de segurança HTTP.
-- **CORS** — Habilitação de Cross-Origin Resource Sharing.
-- **Validator** — Lib para sanitização e validação avançada de e-mails e textos.
-- **Dotenv** — Gerenciamento de variáveis de ambiente.
+- **Express.js** — Framework web minimalista para rotas, middlewares e servidor de arquivos estáticos.
+- **better-sqlite3** — Driver SQLite síncrono e de alta performance utilizando *Prepared Statements*.
+- **Helmet** — Proteção e cabeçalhos de segurança HTTP.
+- **CORS** — Middleware para permissão de requisições Cross-Origin entre React e Node.js.
+- **Validator** — Sanitização de dados contra ataques XSS e validação de e-mails.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura de Arquivos do Projeto
 
 ```text
-testenodejs/
-├── api/                          # Servidor Backend em Node.js
+testereact/
+├── api/                          # Backend API RESTful em Node.js
 │   ├── db/                       # Banco de dados SQLite (criado em runtime)
 │   │   └── landing.db            # Arquivo da base de dados local
 │   ├── src/
 │   │   ├── config/
-│   │   │   └── conexaoBanco.js   # Inicialização e conexão do SQLite
+│   │   │   └── conexaoBanco.js   # Conexão e inicialização do SQLite
 │   │   ├── controladores/
-│   │   │   └── leadControlador.js# Regras de negócio da API
+│   │   │   └── leadControlador.js# Lógica de negócio da API
 │   │   ├── rotas/
-│   │   │   └── leadRotas.js      # Endpoints da aplicação
+│   │   │   └── leadRotas.js      # Endpoints HTTP da aplicação
 │   │   ├── utilitarios/
-│   │   │   └── validadores.js    # Sanitização e validação dos inputs
-│   │   ├── app.js                # Configuração do Express, CORS e estáticos do React
-│   │   └── server.js             # Inicialização da porta e servidor
+│   │   │   └── validadores.js    # Funções de sanitização e validação
+│   │   ├── app.js                # Express app, middlewares e estáticos do React
+│   │   └── server.js             # Inicialização do servidor na porta 3000
 │   ├── .env                      # Variáveis de ambiente
-│   ├── iniciarBanco.js           # DDL de criação da tabela de leads
-│   └── package.json              # Dependências e scripts do Node.js
+│   ├── iniciarBanco.js           # Criação e estrutura da tabela de leads
+│   └── package.json              # Dependências do Node.js
 │
-├── frontend/                     # Interface Web em React + Vite
-│   ├── public/                   # Recursos estáticos públicos
+├── frontend/                     # Frontend Reativo em React + Vite
 │   ├── src/
-│   │   ├── components/           # Componentes modulares React
-│   │   │   ├── Header.jsx        # Cabeçalho fixo com CTA
-│   │   │   ├── Hero.jsx          # Seção principal com banner e destaque
-│   │   │   ├── Beneficios.jsx    # Cards de benefícios
-│   │   │   ├── FormularioLead.jsx# Formulário com máscara de WhatsApp e validação
-│   │   │   ├── Toast.jsx         # Feedback visual (mensagens temporárias)
-│   │   │   └── Footer.jsx        # Rodapé da página
+│   │   ├── components/           # Componentes React Modulares
+│   │   │   ├── Header.jsx        # Navbar fixa com marca AcademiStack
+│   │   │   ├── Hero.jsx          # Banner principal e destaques do projeto
+│   │   │   ├── Beneficios.jsx    # Cards de arquitetura (React, Node, SQLite)
+│   │   │   ├── FormularioLead.jsx# Formulário reativo com máscara e validação
+│   │   │   ├── Toast.jsx         # Componente de notificação flutuante
+│   │   │   └── Footer.jsx        # Rodapé acadêmico
 │   │   ├── App.jsx               # Componente raiz da aplicação
-│   │   ├── main.jsx              # Ponto de entrada do React (ReactDOM.createRoot)
-│   │   └── index.css             # Estilos globais e importação do Tailwind CSS
-│   ├── index.html                # HTML base do Vite
-│   ├── vite.config.js            # Configuração do Vite e proxy da API
-│   ├── tailwind.config.js        # Configuração das rotas de scan do Tailwind CSS
-│   ├── postcss.config.js         # Configuração do PostCSS
-│   └── package.json              # Dependências do React, Vite e Tailwind
+│   │   ├── main.jsx              # Ponto de entrada do React (ReactDOM)
+│   │   └── index.css             # Estilos globais e Tailwind CSS
+│   ├── index.html                # Ponto de montagem HTML (#root)
+│   ├── vite.config.js            # Configuração do Vite e proxy da API (/api -> 3000)
+│   ├── tailwind.config.js        # Configuração do Tailwind CSS
+│   ├── postcss.config.js         # Configuração PostCSS
+│   └── package.json              # Dependências do React e scripts Vite
 │
-├── doc/                          # Documentação técnica do projeto
+├── doc/                          # Documentação do projeto
 │   └── plano_landingpage_nodejs.md
 │
-├── .gitignore                    # Arquivos ignorados pelo Git
-└── README.md                     # Documentação oficial do repositório
+├── .gitignore                    # Arquivos ignorados pelo Git (node_modules, dist, db)
+└── README.md                     # Documentação oficial do projeto
 ```
 
 ---
 
-## 🗄️ Modelagem do Banco de Dados (SQLite)
+## ⚡ Guia Rápido: Como Executar o Servidor React e o Backend Node.js
 
-O banco de dados SQLite é inicializado automaticamente na subida da aplicação através do script `iniciarBanco.js`.
+### **1. Instalar as Dependências (Primeira Execução)**
 
-### **Tabela `leads`**
+Abra o terminal na raiz do projeto e execute:
 
-```sql
-CREATE TABLE IF NOT EXISTS leads (
-    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome_completo       TEXT    NOT NULL,
-    email               TEXT    NOT NULL,
-    telefone_whatsapp   TEXT    NOT NULL,
-    mensagem            TEXT    DEFAULT NULL,
-    data_cadastro       TEXT    DEFAULT (datetime('now','localtime')),
-    status_atendimento  TEXT    DEFAULT 'novo'
-                                CHECK(status_atendimento IN ('novo','contatado','convertido','perdido'))
-);
+**Backend (API Node.js):**
+```bash
+cd api
+npm install
+```
 
-CREATE INDEX IF NOT EXISTS idx_leads_email ON leads(email);
-CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status_atendimento);
+**Frontend (React 18 + Vite):**
+```bash
+cd ../frontend
+npm install
 ```
 
 ---
 
-## 🚀 Endpoints da API
+### 🚀 **2. Executar o Projeto em Modo de Desenvolvimento (Recomendado)**
 
-| Método | Endpoint | Descrição | Payload (Body) |
-|---|---|---|---|
-| `GET` | `/` | Servidor estático da Landing Page em React (`frontend/dist`) | — |
-| `GET` | `/api/health` | Health Check da API | — |
-| `POST` | `/api/leads` | Cadastra um novo lead | JSON (nome, email, telefone, mensagem) |
-| `GET` | `/api/leads` | Lista todos os leads cadastrados | — |
+No modo de desenvolvimento, o servidor React roda via Vite na porta **5173** com atualização instantânea no navegador (Hot Reload) e redirecionamento de requisições de API para a porta **3000**.
 
----
+#### **Passo 1: Iniciar o Servidor Backend (Node.js)**
+No primeiro terminal:
+```bash
+cd api
+npm run dev
+```
+> O servidor iniciará na porta **3000** (`http://localhost:3000`).
 
-## 🔧 Como Executar o Projeto
+#### **Passo 2: Iniciar o Servidor Frontend (React)**
+Abra um **segundo terminal** no VS Code ou terminal de sua preferência:
+```bash
+cd frontend
+npm run dev
+```
+> O Vite iniciará o servidor React na porta **5173** (`http://localhost:5173`).
 
-### **Pré-requisitos**
-- **Node.js** (v18 ou superior) e **npm** instalados.
-- **Git** instalado.
-
----
-
-### 🚀 **Como Iniciar no Ambiente de Desenvolvimento**
-
-1. **Instalar as dependências da API (Backend):**
-   ```bash
-   cd api
-   npm install
-   ```
-
-2. **Instalar as dependências do Frontend (React):**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-
-3. **Executar o Backend (API na porta 3000):**
-   ```bash
-   cd ../api
-   npm run dev
-   ```
-
-4. **Executar o Frontend (React Vite na porta 5173):**
-   Em um segundo terminal:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-
-5. **Acessar a aplicação no navegador:**
-   - **Frontend React (Modo Dev com Hot Reload):** [http://localhost:5173](http://localhost:5173)
-   - **Health Check da API:** [http://localhost:3000/api/health](http://localhost:3000/api/health)
+#### **Passo 3: Acessar no Navegador**
+- 🌐 **Interface React (Modo Dev):** [http://localhost:5173](http://localhost:5173)
+- 🔌 **API Node.js (Health Check):** [http://localhost:3000/api/health](http://localhost:3000/api/health)
 
 ---
 
-### 📦 **Como Gerar o Build de Produção do React**
+### 📦 **3. Executar o Projeto em Modo de Produção (Build Único)**
 
-Para gerar a versão otimizada do React e servir diretamente pelo servidor Express (Porta 3000):
+Caso prefira compilar a aplicação React e servir tudo através do servidor Node.js/Express na porta **3000**:
 
-1. **Gerar o build do React:**
+1. **Gerar a compilação de produção do React:**
    ```bash
    cd frontend
    npm run build
    ```
+   *Isso criará a pasta otimizada `frontend/dist`.*
 
-2. **Subir o servidor backend Express:**
+2. **Iniciar o servidor backend Express:**
    ```bash
    cd ../api
    npm start
    ```
 
-3. **Acessar a aplicação de produção:**
-   - [http://localhost:3000](http://localhost:3000)
+3. **Acessar no navegador:**
+   - 🌐 **Aplicação Completa em Produção:** [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🛡️ Segurança e Boas Práticas
+## 🛑 Como Parar os Servidores e Liberar Portas
 
-- **Arquitetura de Componentes:** Código React desacoplado, modular e reativo.
-- **Prepared Statements:** Consulta SQL via `better-sqlite3` prevenindo **SQL Injection**.
-- **Sanitização de Entradas:** Tratamento no backend com `validator` prevenindo **XSS**.
-- **Proteção contra Payload Abusivo:** Express configurado com limite de `10kb`.
+Para encerrar os servidores no terminal:
+- Pressione **`Ctrl` + `C`** e confirme com **`S`** (no Windows) ou encerre a sessão do terminal.
+
+Caso ocorra o erro `EADDRINUSE` (porta ocupada):
+- **Windows (PowerShell):**
+  ```powershell
+  npx kill-port 3000
+  npx kill-port 5173
+  ```
+- **Linux / Mac (Terminal):**
+  ```bash
+  npx kill-port 3000 5173
+  ```
+
+---
+
+## 🗄️ Endpoints da API RESTful
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/` | Servidor estático da aplicação React (`frontend/dist`) |
+| `GET` | `/api/health` | Health Check do servidor Node.js |
+| `POST` | `/api/leads` | Cadastrar novo lead no banco SQLite |
+| `GET` | `/api/leads` | Listar leads cadastrados (uso interno/acadêmico) |
+
+---
+
+## 📜 Licença e Créditos
+
+Projeto desenvolvido com fins acadêmicos e educacionais. Repositório oficial no GitHub:
+🔗 [https://github.com/carlosdavidr-eng/testereact.git](https://github.com/carlosdavidr-eng/testereact.git)

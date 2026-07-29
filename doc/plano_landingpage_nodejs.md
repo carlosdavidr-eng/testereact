@@ -1,62 +1,129 @@
-# Plano de Arquitetura — Landing Page de Alta Conversão em React
+# Plano de Arquitetura — Sistema Acadêmico em React 18 + Node.js
 
 > **Idioma obrigatório:** 100% do código (variáveis, funções, tabelas, colunas, chaves JSON, rotas **e comentários**) em **português brasileiro**. Comentários devem descrever a lógica em PT-BR em toda função e bloco relevante.
 
-## 1. Estrutura de Pastas
+---
 
-```
-testenodejs/
+## 1. Visão Geral da Arquitetura
+
+O projeto consiste em um **Sistema Acadêmico Full Stack** composto por duas camadas bem definidas:
+
+1. **Frontend (React 18 + Vite + Tailwind CSS)**: Interface moderna baseada em componentes reativos, responsável pelo gerenciamento de estado da interface, validação visual e envio de dados via `fetch` assíncrono.
+2. **Backend (Node.js + Express + SQLite)**: API RESTful encarregada do roteamento, sanitização de inputs contra scripts maliciosos, tratamento de cabeçalhos de segurança (Helmet/CORS) e persistência síncrona com banco de dados SQLite via `better-sqlite3`.
+
+---
+
+## 2. Estrutura Completa de Diretórios
+
+```text
+testereact/
 ├── api/                          # Backend Node.js
 │   ├── .env                      # Variáveis de ambiente (porta, banco)
-│   ├── package.json
+│   ├── package.json              # Dependências e scripts do servidor Node.js
 │   ├── src/
-│   │   ├── app.js                # Config Express (CORS, JSON, rotas, arquivos estáticos React)
-│   │   ├── server.js             # Inicialização do servidor
+│   │   ├── app.js                # Configuração do Express, CORS, Helmet e estáticos
+│   │   ├── server.js             # Inicialização do servidor HTTP (Porta 3000)
 │   │   ├── config/
 │   │   │   └── conexaoBanco.js   # Conexão SQLite (better-sqlite3)
 │   │   ├── controladores/
-│   │   │   └── leadControlador.js
+│   │   │   └── leadControlador.js# Regras de negócio da API
 │   │   ├── rotas/
-│   │   │   └── leadRotas.js
+│   │   │   └── leadRotas.js      # Rotas da API (/api/leads)
 │   │   └── utilitarios/
-│   │       └── validadores.js    # Sanitização e validação
+│   │       └── validadores.js    # Sanitização e validação dos inputs
 │   │
-│   ├── db/                       # Banco de dados SQLite (criado em runtime)
-│   │   └── landing.db            # Arquivo do banco SQLite (gitignore)
-│   │
-│   └── iniciarBanco.js           # Criação da tabela leads na inicialização
+│   ├── db/                       # Diretório do banco SQLite (runtime)
+│   │   └── landing.db            # Arquivo da base de dados local
+│   └── iniciarBanco.js           # Script DDL de criação da tabela de leads
 │
-├── frontend/                     # Interface do Usuário (React 18 + Vite + Tailwind CSS)
-│   ├── package.json              # Dependências React e scripts (dev, build)
-│   ├── vite.config.js            # Configuração Vite e proxy /api -> http://localhost:3000
-│   ├── tailwind.config.js        # Configuração do Tailwind CSS
-│   ├── postcss.config.js         # Plugins PostCSS
+├── frontend/                     # Frontend Reativo (React 18 + Vite)
+│   ├── package.json              # Dependências do React (dev, build, preview)
+│   ├── vite.config.js            # Configuração do Vite e proxy da API (/api -> 3000)
+│   ├── tailwind.config.js        # Configuração das rotas de scan do Tailwind CSS
+│   ├── postcss.config.js         # Configuração do PostCSS
 │   ├── index.html                # HTML Base com div #root
 │   └── src/
-│       ├── main.jsx              # Ponto de entrada do React
-│       ├── App.jsx               # Componente principal
-│       ├── index.css             # Estilos globais + Tailwind CSS
+│       ├── main.jsx              # Ponto de entrada do React (ReactDOM.createRoot)
+│       ├── App.jsx               # Componente raiz unificador da interface
+│       ├── index.css             # Estilos globais e importações do Tailwind CSS
 │       └── components/
-│           ├── Header.jsx        # Navbar fixa
-│           ├── Hero.jsx          # Seção Hero com CTA
-│           ├── Beneficios.jsx    # Cards de diferenciais
-│           ├── FormularioLead.jsx# Form de captura com máscara e validação
-│           ├── Toast.jsx         # Notificações visuais
-│           └── Footer.jsx        # Rodapé
+│           ├── Header.jsx        # Navbar fixa com marca AcademiStack
+│           ├── Hero.jsx          # Seção Hero com destaque para a stack
+│           ├── Beneficios.jsx    # Cards da arquitetura (React, Node, SQLite)
+│           ├── FormularioLead.jsx# Formulário reativo com máscara e validação
+│           ├── Toast.jsx         # Componente de notificação flutuante
+│           └── Footer.jsx        # Rodapé institucional
 │
 ├── doc/
 │   └── plano_landingpage_nodejs.md   # ← Este documento
 │
-├── .gitignore                    # ignora node_modules, .env, api/db/, frontend/dist/
-│
-└── README.md
+├── .gitignore                    # Especificação de arquivos ignorados pelo Git
+└── README.md                     # Guia de instalação e documentação oficial
 ```
 
 ---
 
-## 2. Schema SQLite — Tabela `leads`
+## 3. Instruções de Ativação e Execução do Servidor React e Backend
 
-O banco SQLite (`api/db/landing.db`) é criado automaticamente pelo `better-sqlite3` na primeira execução. A tabela é criada via `iniciarBanco.js`:
+### 3.1 Instalação das Dependências
+
+Instalar pacotes do servidor backend:
+```bash
+cd api
+npm install
+```
+
+Instalar pacotes da aplicação React frontend:
+```bash
+cd ../frontend
+npm install
+```
+
+---
+
+### 3.2 Ativação do Servidor em Desenvolvimento (React + Node.js)
+
+1. **Terminal 1 — Iniciar a API Node.js (Porta 3000):**
+   ```bash
+   cd api
+   npm run dev
+   ```
+
+2. **Terminal 2 — Iniciar o Servidor React no Vite (Porta 5173):**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+3. **Acesso no Navegador:**
+   - Interface do Usuário em React: **`http://localhost:5173`**
+   - Endpoints da API RESTful: **`http://localhost:3000/api/leads`**
+
+---
+
+### 3.3 Geração do Build de Produção
+
+Para compilar o frontend React em pacotes JS/CSS otimizados e disponibilizá-los diretamente via Express:
+
+1. Executar a compilação:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+2. Executar o servidor Express:
+   ```bash
+   cd ../api
+   npm start
+   ```
+3. Acessar a aplicação completa em **`http://localhost:3000`**.
+
+---
+
+## 4. Modelagem do Banco de Dados (SQLite)
+
+O banco de dados SQLite (`api/db/landing.db`) é instanciado automaticamente.
+
+### Tabela `leads`
 
 ```sql
 CREATE TABLE IF NOT EXISTS leads (
@@ -76,65 +143,14 @@ CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status_atendimento);
 
 ---
 
-## 3. Arquitetura dos Endpoints da API
+## 5. Repositório e Controle de Versão (Git / GitHub)
 
-### 3.1 `POST /api/leads` — Cadastro de lead
+O controle de versão é mantido no repositório GitHub:
+🔗 `https://github.com/carlosdavidr-eng/testereact.git`
 
-| Campo | Tipo | Validação |
-|---|---|---|
-| `nome_completo` | string (3-150) | Obrigatório, sanitizado |
-| `email` | string | Obrigatório, regex de e-mail |
-| `telefone_whatsapp` | string (14-15) | Obrigatório, apenas dígitos após limpeza |
-| `mensagem` | string (0-500) | Opcional, sanitizado |
-
-**Resposta sucesso (201):**
-```json
-{"sucesso": true, "mensagem": "Lead cadastrado com sucesso!"}
+Para atualizar o repositório após edições:
+```bash
+git add .
+git commit -m "docs: atualiza instrucoes do servidor React e especificacoes do sistema"
+git push -u origin main
 ```
-
-**Resposta erro (422):**
-```json
-{"sucesso": false, "mensagem": "E-mail inválido.", "erros": [...]}
-```
-
-### 3.2 `GET /api/leads` — Listagem (uso interno)
-
-Retorna array de leads.
-
-### 3.3 Segurança
-
-- `express.json({ limit: '10kb' })` — proteção contra payload excessivo
-- Sanitização com `validator` (trim, escape, stripLow)
-- **Prepared statements** obrigatórios (`better-sqlite3` usa `?` posicionais — sem concatenação)
-- CORS configurado com lista de origens permitidas
-- `helmet` para headers de segurança
-- `api/db/` listado no `.gitignore`
-
----
-
-## 4. Especificações Visuais do Front-end em React
-
-### 4.1 Stack
-
-- **React 18** — Componentes desacoplados e estado reativo
-- **Vite** — HMR e compilação rápida
-- **Tailwind CSS** — Classes utilitárias para responsividade e design moderno
-- **JavaScript JSX** — Fetch API, máscaras dinâmicas no estado do React
-
-### 4.2 Componentes da Landing Page
-
-1. **Header.jsx** — Navbar fixa no topo, logo + CTA "Quero saber mais"
-2. **Hero.jsx** — Headline forte, subheadline, ilustração, botão CTA âncora para o form
-3. **Beneficios.jsx** — 3 cards com ícones e destaques
-4. **FormularioLead.jsx** — Campos controlados pelo estado, máscara (xx) xxxxx-xxxx, validação, botão com loading spinner
-5. **Toast.jsx** — Notificação flutuante de sucesso ou erro (desaparece após 4 segundos)
-6. **Footer.jsx** — Direitos reservados
-
----
-
-## 5. Fluxo de Desenvolvimento
-
-1. ✅ **Fase 1:** Planejamento e arquitetura
-2. ✅ **Fase 2:** Backend API em Node.js + Express + SQLite
-3. ✅ **Fase 3:** Migração do frontend para React + Vite + Tailwind CSS
-4. ✅ **Fase 4:** Atualização da documentação e execução dos testes de integração
