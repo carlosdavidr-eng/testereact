@@ -1,4 +1,4 @@
-# Plano de Arquitetura — Landing Page de Alta Conversão
+# Plano de Arquitetura — Landing Page de Alta Conversão em React
 
 > **Idioma obrigatório:** 100% do código (variáveis, funções, tabelas, colunas, chaves JSON, rotas **e comentários**) em **português brasileiro**. Comentários devem descrever a lógica em PT-BR em toda função e bloco relevante.
 
@@ -10,7 +10,7 @@ testenodejs/
 │   ├── .env                      # Variáveis de ambiente (porta, banco)
 │   ├── package.json
 │   ├── src/
-│   │   ├── app.js                # Config Express (CORS, JSON, rotas)
+│   │   ├── app.js                # Config Express (CORS, JSON, rotas, arquivos estáticos React)
 │   │   ├── server.js             # Inicialização do servidor
 │   │   ├── config/
 │   │   │   └── conexaoBanco.js   # Conexão SQLite (better-sqlite3)
@@ -26,19 +26,30 @@ testenodejs/
 │   │
 │   └── iniciarBanco.js           # Criação da tabela leads na inicialização
 │
-├── frontend/                     # Interface do usuário
-│   ├── index.html                # Landing Page completa
-│   ├── css/
-│   │   └── estilo.css            # Estilos customizados + Tailwind CDN
-│   └── js/
-│       └── app.js                # Máscara telefone + Fetch API
+├── frontend/                     # Interface do Usuário (React 18 + Vite + Tailwind CSS)
+│   ├── package.json              # Dependências React e scripts (dev, build)
+│   ├── vite.config.js            # Configuração Vite e proxy /api -> http://localhost:3000
+│   ├── tailwind.config.js        # Configuração do Tailwind CSS
+│   ├── postcss.config.js         # Plugins PostCSS
+│   ├── index.html                # HTML Base com div #root
+│   └── src/
+│       ├── main.jsx              # Ponto de entrada do React
+│       ├── App.jsx               # Componente principal
+│       ├── index.css             # Estilos globais + Tailwind CSS
+│       └── components/
+│           ├── Header.jsx        # Navbar fixa
+│           ├── Hero.jsx          # Seção Hero com CTA
+│           ├── Beneficios.jsx    # Cards de diferenciais
+│           ├── FormularioLead.jsx# Form de captura com máscara e validação
+│           ├── Toast.jsx         # Notificações visuais
+│           └── Footer.jsx        # Rodapé
 │
 ├── doc/
 │   └── plano_landingpage_nodejs.md   # ← Este documento
 │
-├── .gitignore                    # ignora node_modules, .env, api/db/
+├── .gitignore                    # ignora node_modules, .env, api/db/, frontend/dist/
 │
-└── redme.md
+└── README.md
 ```
 
 ---
@@ -88,7 +99,7 @@ CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status_atendimento);
 
 ### 3.2 `GET /api/leads` — Listagem (uso interno)
 
-Retorna array paginado de leads.
+Retorna array de leads.
 
 ### 3.3 Segurança
 
@@ -96,59 +107,34 @@ Retorna array paginado de leads.
 - Sanitização com `validator` (trim, escape, stripLow)
 - **Prepared statements** obrigatórios (`better-sqlite3` usa `?` posicionais — sem concatenação)
 - CORS configurado com lista de origens permitidas
-- `helmet` para headers de segurança (opcional no MVP)
-- `api/db/` listado no `.gitignore` — banco local nunca versionado
+- `helmet` para headers de segurança
+- `api/db/` listado no `.gitignore`
 
 ---
 
-## 4. Especificações Visuais do Front-end
+## 4. Especificações Visuais do Front-end em React
 
 ### 4.1 Stack
 
-- **HTML5 semântico** (`<header>`, `<main>`, `<section>`, `<form>`)
-- **Tailwind CSS via CDN** — classes utilitárias para responsividade rápida
-- **JavaScript nativo** — Fetch API, máscara de telefone, feedback sem refresh
+- **React 18** — Componentes desacoplados e estado reativo
+- **Vite** — HMR e compilação rápida
+- **Tailwind CSS** — Classes utilitárias para responsividade e design moderno
+- **JavaScript JSX** — Fetch API, máscaras dinâmicas no estado do React
 
-### 4.2 Seções da Landing Page
+### 4.2 Componentes da Landing Page
 
-1. **Navbar** — fixa no topo, logo + CTA "Quero saber mais"
-2. **Hero** — headline forte, subheadline, ilustração, botão CTA âncora para o form
-3. **Benefícios** — 3 cards com ícones (Mobile-First: empilhados, Desktop: grid 3 col)
-4. **Formulário de Captura** — campos com placeholder, máscara (xx) xxxxx-xxxx, validação inline, botão com loading spinner
-5. **Footer** — links, direitos reservados
-
-### 4.3 Comportamento de Submissão
-
-1. Usuário preenche → clique no botão
-2. Botão desabilita + exibe spinner
-3. Fetch API envia `POST` para `http://localhost:3000/api/leads`
-4. Em caso de **sucesso**: limpa formulário, exibe toast verde "Mensagem enviada com sucesso!"
-5. Em caso de **erro**: exibe toast vermelho com a mensagem retornada pela API
+1. **Header.jsx** — Navbar fixa no topo, logo + CTA "Quero saber mais"
+2. **Hero.jsx** — Headline forte, subheadline, ilustração, botão CTA âncora para o form
+3. **Beneficios.jsx** — 3 cards com ícones e destaques
+4. **FormularioLead.jsx** — Campos controlados pelo estado, máscara (xx) xxxxx-xxxx, validação, botão com loading spinner
+5. **Toast.jsx** — Notificação flutuante de sucesso ou erro (desaparece após 4 segundos)
+6. **Footer.jsx** — Direitos reservados
 
 ---
 
-## 5. Regras de Otimização de Tokens (Codificação Futura)
+## 5. Fluxo de Desenvolvimento
 
-| Princípio | Aplicação |
-|---|---|
-| Comentários em PT-BR | Toda função, variável e bloco relevante deve ter comentário descritivo em português brasileiro |
-| Arrow functions curtas | Preferir `(x) => x` a `function(x) { return x }` |
-| Destructuring | `const { nome, email } = req.body` |
-| Template strings | `` `${base}/leads` `` em vez de concatenação |
-| If ternário | `status === 201 ? sucesso() : erro()` |
-| Minificação de CSS | Manter classes Tailwind no HTML, CSS customizado mínimo |
-| Reuso de fetch | Função genérica `api(método, corpo)` para todas as chamadas |
-| SQL com placeholder | `?` posicional (`better-sqlite3`) — nunca template literals |
-
----
-
-## 6. Fluxo de Desenvolvimento (Próximos Passos)
-
-1. ✅ **Fase 1 (atual):** Planejamento e arquitetura — *documento salvo*
-2. ⏳ **Fase 2:** Codificação do backend (`/api`) — package.json, conexaoBanco.js (SQLite), iniciarBanco.js, rotas, controlador, validadores
-3. ⏳ **Fase 3:** Codificação do frontend (`/frontend`) — HTML, Tailwind, JS com Fetch + máscara
-4. ⏳ **Fase 4:** Teste integrado e ajustes finos
-
----
-
-*Documento gerado em 29/07/2026 — Pronto para codificação após aprovação.*
+1. ✅ **Fase 1:** Planejamento e arquitetura
+2. ✅ **Fase 2:** Backend API em Node.js + Express + SQLite
+3. ✅ **Fase 3:** Migração do frontend para React + Vite + Tailwind CSS
+4. ✅ **Fase 4:** Atualização da documentação e execução dos testes de integração
